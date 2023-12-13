@@ -2,12 +2,12 @@
 %% parameters for AI prediction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-startdate=13;
-enddate=13;
-starthour=12;
-endhour=12;
+startdate=1;
+enddate=31;
+starthour=0;
+endhour=23;
 
-imageDir = 'realaf/11sugar_eqt_iasp91/';
+imageDir = '12_3d/';
 ai_threshold = 1.0;
 %load('mat/eq_fewer00004_60/checkpoints/eqtrained3DUNetlinear10-Aug-2021-01-54-00-Epoch-20.mat'); checkpoint140440_epoch20.mat These two files are identical to EQwatcher_trained_model_fewer.mat   
 load('EQwatcher_trained_model_fewer.mat');
@@ -85,7 +85,7 @@ for id = 1:1
 end
 
 
-%save(strcat(imageDir, day, num2str(hour), '_ailoc_fewer00004.mat'),'predictedLabels');
+%save(strcat(imageDir, day, num2str(hour), '_ailoc.mat'),'predictedLabels');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% AI prediction to map location
@@ -105,7 +105,7 @@ for i = 1:length(candidates)
 end
 
 if n==0
-	fclose(fopen(strcat(imageDir, day, num2str(hour), '_ailoc_fewer_final.csv'), 'w'));
+	fclose(fopen(strcat(imageDir, day, num2str(hour), '_ailoc.csv'), 'w'));
 	continue;
 end
 
@@ -130,7 +130,7 @@ for i = 1:length(steps)
 end
 
 catalog = sortrows(catalog);
-writematrix(catalog, strcat(imageDir, day, num2str(hour), '_ailoc_eqt_iasp91.csv'))
+writematrix(catalog, strcat(imageDir, day, num2str(hour), '_ailoc.csv'))
 
 clear('dadizhen', 'score', 'catalog');
 

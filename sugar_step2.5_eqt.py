@@ -14,16 +14,11 @@ def filter_times(pstation, pprob, sstation, sprob, within):
     all_times = set(pstation + sstation)
     for ptime, pprobability in zip(pstation, pprob):
         index = pstation.index(ptime)
-        popped = 0
         for stime, sprobability in zip(sstation, sprob):
             if abs(stime - ptime) <= within and sprobability > pprobability:
                 pstation.pop(index)
                 pprob.pop(index)
-                popped = 1
                 break  
-        
-        if popped == 1:
-            continue
 
         for other_time, other_probability in zip(pstation, pprob):
             if abs(other_time - ptime) <= within and other_time != ptime and other_probability > pprobability:
@@ -33,16 +28,11 @@ def filter_times(pstation, pprob, sstation, sprob, within):
 
     for stime, sprobability in zip(sstation, sprob):
         index = sstation.index(stime)
-        popped = 0
         for ptime, pprobability in zip(pstation, pprob):
             if abs(ptime - stime) <= within and pprobability > sprobability:
                 sstation.pop(index)
                 sprob.pop(index)
-                popped = 1
                 break
-
-        if popped == 1:
-            continue
 
         for other_time, other_probability in zip(sstation, sprob):
             if abs(other_time - stime) <= within and other_time != stime and other_probability > sprobability:
@@ -59,7 +49,7 @@ def main():
         ('year','2016'),
         ('month','11'),    # current version supports within 1 month only
         ('day','13'),
-        ('hour','13'),
+        ('hour','00'),
         ('min','00'),
         ('second', '00')
     ])
@@ -67,8 +57,8 @@ def main():
     time_end=dict([
         ('year','2016'),
         ('month','11'),
-        ('day','13'),
-        ('hour','14'),
+        ('day','14'),
+        ('hour','24'),
         ('min','00'),     # keep it to the whole hour for the moment
         ('second', '00')
     ])
@@ -76,8 +66,8 @@ def main():
     process_unit = 60       # min
     overlap = 5             # min
 
-    datadir = '/mnt/readynas6/ftan/2020location_method_leo2p/data2016all/'
-    outputdir = './test1313eqt/'
+    datadir = './data2016all/'
+    outputdir = './11_3d/'
     tempmseeddir = './temp/'
 
     totalday = int(float(time_end['day']) - float(time_begin['day']) + 1)
@@ -90,7 +80,6 @@ def main():
             day=str(day)
 
         filenames = os.listdir(datadir + time_begin['month'] + '/' + day + '/')
-        #print(filenames)
 
         if day == time_end['day']:
             duration = int(float(time_end['hour']))
@@ -104,7 +93,6 @@ def main():
 
         for runhour in range(0,duration):
 
-            
             os.mkdir(tempmseeddir)
 
             if day == time_begin['day']:
@@ -115,20 +103,15 @@ def main():
             t1 = UTCDateTime(time_begin['year'] + '-' + time_begin['month'] + '-' + str(
                 int(float(time_begin['day']) + np.floor(float(time_begin['hour']) + runh) / 24)) + 'T' + str(
                 int(float(time_begin['hour']) + runh) % 24) + ':00:00')
-            
-            
+
             with open(outputdir + day + 'stations.p', 'rb') as f:
                 comein = pickle.load(f)
             [stlas, stlos, stzs, stnms] = comein
 
-            #print(stnms)
-
             for i in filenames:
                 try:
                     channels = read(datadir + time_begin['month'] + '/' + day + '/' + i)
-                    print('read in ' + i)
                 except TypeError:
-                    print('cannot read ' + i)
                     continue
                 channels.merge()
                 st = channels.split()
@@ -145,25 +128,22 @@ def main():
                 if Path(name1).is_file() == True:
                     try:
                         channelsnew = read(name1)
-                        channelsnew.merge()
-                        stnew = channelsnew.split()
-                        stnew.detrend()
-                        stnew.merge(fill_value=0)
-                        combine = st + stnew
-                        combine.merge(fill_value=0)
-                        st = combine
                     except TypeError:
-                        pass
+                        continue
+                    # channels.merge(method=1, fill_value='interpolate')
+                    channelsnew.merge()
+                    stnew = channelsnew.split()
+                    stnew.detrend()
+                    stnew.merge(fill_value=0)
+                    combine = st + stnew
+                    combine.merge(fill_value=0)
+                    st = combine
 
                 for j in st:
                     channel = j.stats.channel
                     stnm = j.stats.station
                     if stnm not in stnms:
-                        print('station ' + stnm + ' not in the stations.p, skip it')
                         continue
-                    else:
-                        print('writing station ' + stnm)
-
                     try:
                         os.mkdir(tempmseeddir + stnm)
                     except FileExistsError:
@@ -201,7 +181,7 @@ def main():
                          mseed_dir='temp',
                          stations_json=json_basepath,
                          overlap=0.7,
-                         n_processor=100)
+                         n_processor=20)
 
             ###########################################################
             # prediction
@@ -215,10 +195,8 @@ def main():
                       S_threshold=0.1,
                       number_of_plots=1,
                       plot_mode='time',
-                      #number_of_cpus=100,
                       output_probabilities=False)
 
-            
             ###########################################################
             # save to sugar format
             ###########################################################
@@ -334,12 +312,12 @@ def main():
             onlyphaseS = np.maximum(onlyphaseh1, onlyphaseh2)
             sam = np.maximum(h1am, h2am)
 
-            #pickle.dump([Pmark, Smark, onlyphaseP, onlyphaseS, pam, sam], open(outputdir + day + str(int(float(time_begin['hour'])+runh)%24) + 'eqtpicks.p', 'wb'))
+            pickle.dump([Pmark, Smark, onlyphaseP, onlyphaseS, pam, sam], open(outputdir + day + str(int(float(time_begin['hour'])+runh)%24) + 'eqtpicks.p', 'wb'))
 
-            #shutil.rmtree('temp')
-            #shutil.rmtree('temp2')
-            #shutil.rmtree('temp_processed_hdfs')
-            #shutil.rmtree('temp_detections')
+            shutil.rmtree('temp')
+            shutil.rmtree('temp2')
+            shutil.rmtree('temp_processed_hdfs')
+            shutil.rmtree('temp_detections')
 
 if __name__ == "__main__":
     main()
