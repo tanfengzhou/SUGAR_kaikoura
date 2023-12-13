@@ -2,12 +2,12 @@
 %% parameters for AI prediction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-startdate=1;
-enddate=30;
-starthour=0;
-endhour=23;
+startdate=13;
+enddate=13;
+starthour=12;
+endhour=12;
 
-imageDir = 'realaf/11fewer/';
+imageDir = 'realaf/11sugar_eqt_iasp91/';
 ai_threshold = 1.0;
 %load('mat/eq_fewer00004_60/checkpoints/eqtrained3DUNetlinear10-Aug-2021-01-54-00-Epoch-20.mat'); checkpoint140440_epoch20.mat These two files are identical to EQwatcher_trained_model_fewer.mat   
 load('EQwatcher_trained_model_fewer.mat');
@@ -130,7 +130,7 @@ for i = 1:length(steps)
 end
 
 catalog = sortrows(catalog);
-writematrix(catalog, strcat(imageDir, day, num2str(hour), '_ailoc_fewer_final.csv'))
+writematrix(catalog, strcat(imageDir, day, num2str(hour), '_ailoc_eqt_iasp91.csv'))
 
 clear('dadizhen', 'score', 'catalog');
 

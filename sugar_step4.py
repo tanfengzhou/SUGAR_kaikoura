@@ -6,9 +6,9 @@ import distance
 # parameters
 ##########################################################
 
-nametag = '_fewer_final'
+nametag = '_3d'
 sr = 50
-after = 30    # looking for amplitude 20 s after picked arrival if no other phases
+after = 30    # looking for amplitude 30 s after picked arrival if no other phases
 
 ##############################################################
 # set study period
@@ -16,18 +16,18 @@ after = 30    # looking for amplitude 20 s after picked arrival if no other phas
 
 time_begin = dict([
     ('year', '2016'),
-    ('month', '11'),
-    ('day', '13'),
-    ('hour', '12'),
+    ('month', '12'),
+    ('day', '01'),
+    ('hour', '00'),
     ('min', '00'),
     ('second', '00')
 ])
 
 time_end = dict([
     ('year', '2016'),
-    ('month', '11'),
-    ('day', '13'),
-    ('hour', '14'),
+    ('month', '12'),
+    ('day', '31'),
+    ('hour', '24'),
     ('min', '00'),
     ('second', '00')
 ])
@@ -36,7 +36,7 @@ time_end = dict([
 # set folder and file names
 ##############################################################
 
-dirread = 'realaf/11_3d/'
+dirread = '12_3d/'
 outputdir = dirread
 
 with open('sta_corr_new.csv', 'r') as f:
@@ -130,6 +130,8 @@ for date in range(0, totalday):
             detail[5] = int(detail[5])
             detail[6] = float(detail[6])
             detail[7] = float(detail[7])
+            detail[8] = float(detail[8])
+            detail[9] = float(detail[9])
             catalog.append(detail)
 
         f = open(outputdir + day + str(int(float(time_begin['hour'])+runh)%24) + 'magnitude' + nametag + '.txt', 'w')
@@ -138,7 +140,7 @@ for date in range(0, totalday):
         for eq in catalog:
             Ml = np.empty(nsta)
             Ml[:] = np.nan
-            id = eq[8]
+            id = eq[10]
             phase_index = events.index(id)
             stationlist = []
             while events[phase_index] == id:
@@ -231,7 +233,11 @@ for date in range(0, totalday):
             f.write(' ')
             f.write(str(np.around(eq[7], 2)))
             f.write(' ')
-            f.write(eq[8])
+            f.write(str(np.around(eq[8], 2)))
+            f.write(' ')
+            f.write(str(np.around(eq[9], 3)))
+            f.write(' ')
+            f.write(eq[10])
             f.write('\n')
 
         f.close()
