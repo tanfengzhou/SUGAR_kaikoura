@@ -96,8 +96,8 @@ traveltime_tableS_name = 'tableS_iasp91_new.p'
 ##########################################################
 
 sr = 50
-error_window = 4     # counting S phases within plus minus 3 s and P phase within 1.5 s in location process 1
-win = error_window
+error_window = 3     # counting S and P phases within plus minus 3 s in location process 1
+win = 6
 kurwindow = 2         # phase picking window duration
 kurthreshold = 3      # kurtosis threshold for phase picking
 phasein = 3           # minimum inteval for different phases at the same channel
@@ -474,7 +474,7 @@ for date in range(0, totalday):
             eventtime0, evlat, evlon= order[0][0], order[0][1], order[0][2]
 
             ################################################################################################################
-            # 1st process, use the closest 20 stations estimate a pre-magnitude, P>1
+            # 1st process, use the closest 20 stations estimate a pre-magnitude
             ################################################################################################################
 
             ptraveltimes_local = []
@@ -504,7 +504,7 @@ for date in range(0, totalday):
                 for k, l in zip(Pmark[j[0]], pam[j[0]]):
                     if abs(k / sr - expectp) < dt:
                         dt = abs(k / sr - expectp)
-                        if dt < win * 2/3:
+                        if dt < error_window:
                             tryP[0][j[0]] = k / sr
                             tryPam[0][j[0]] = l
 
@@ -513,14 +513,14 @@ for date in range(0, totalday):
                 for k, l in zip(h1mark[j[0]], h1am[j[0]]):
                     if abs(k / sr - expects) < dt:
                         dt = abs(k / sr - expects)
-                        if dt < win:
+                        if dt < error_window:
                             tryS[0][j[0]] = k / sr
                             trySam[0][j[0]] = l
 
                 for k, l in zip(h2mark[j[0]], h2am[j[0]]):
                     if abs(k / sr - expects) < dt:
                         dt = abs(k / sr - expects)
-                        if dt < win:
+                        if dt < error_window:
                             tryS[0][j[0]] = k / sr
                             trySam[0][j[0]] = l
 
@@ -579,37 +579,70 @@ for date in range(0, totalday):
             tryP = [np.ones(nsta) * (-1)]
             tryS = [np.ones(nsta) * (-1)]
 
-            tryPam = [np.ones(nsta) * (-1)]
-            trySam = [np.ones(nsta) * (-1)]
+            #tryPam = [np.ones(nsta) * (-1)]
+            #trySam = [np.ones(nsta) * (-1)]
+
+            Ml = np.empty(nsta * 2)
+            Ml[:] = np.nan
+
+            checkp = 0
+            checks = 0
 
             for j in range(nsta):
                 expect = eventtime0 + ptraveltimes_local[j]
                 expectrange = range(int(round((expect-sigmatp(diss[j])*3) * sr)), int(round((expect+sigmatp(diss[j])*3) * sr)))
                 dt = 999
+                dm = sigmam * 3
                 for k in expectrange:
                     if onlyphaseP[j][k] > 0:
-                        if abs(k / sr - expect) < dt:
+                        am = amphaseP[j][k] * SPratio
+                        R = ((diss[j] * 111) ** 2 + ((depth + stz[j]) / 1000) ** 2) ** 0.5
+                        logA0R = -(0.51 - 0.79 * 10 ** (-3) * R - 1.67 * np.log10(R))
+                        Ml_i = np.log10(am) + logA0R
+                        if abs(k / sr - expect) < dt and abs(Ml_i - premag) < sigmam * 3 and abs(k / sr - expect) * abs(Ml_i - premag) < dt * dm:
                             dt = abs(k / sr - expect)
+                            dm = abs(Ml_i - premag)
                             tryP[0][j] = k / sr
-                            tryPam[0][j] = amphaseP[j][k]
+                            #tryPam[0][j] = amphaseP[j][k]
+                            Ml[j * 2] = Ml_i
+                            checkp = checkp + 1
 
                 expect = eventtime0 + straveltimes_local[j]
                 expectrange = range(int(round((expect-sigmats(diss[j])*3) * sr)), int(round((expect+sigmats(diss[j])*3) * sr)))
                 dt = 999
+                dm = sigmam * 3
+                youS = False
                 for k in expectrange:
                     if onlyphaseh1[j][k] > 0:
-                        if abs(k / sr - expect) < dt:
+                        am = amphaseh1[j][k]
+                        R = ((diss[j] * 111) ** 2 + ((depth + stz[j]) / 1000) ** 2) ** 0.5
+                        logA0R = -(0.51 - 0.79 * 10 ** (-3) * R - 1.67 * np.log10(R))
+                        Ml_i = np.log10(am) + logA0R
+                        if abs(k / sr - expect) < dt and abs(Ml_i - premag) < sigmam * 3 and abs(k / sr - expect) * abs(Ml_i - premag) < dt * dm:
                             dt = abs(k / sr - expect)
+                            dm = abs(Ml_i - premag)
                             tryS[0][j] = k / sr
-                            trySam[0][j] = amphaseh1[j][k]
+                            #trySam[0][j] = amphaseS[j][k]
+                            Ml[j * 2 + 1] = Ml_i
+                            checks = checks + 1
+                            youS = True
 
                 for k in expectrange:
                     if onlyphaseh2[j][k] > 0:
-                        if abs(k / sr - expect) < dt:
+                        am = amphaseh2[j][k]
+                        R = ((diss[j] * 111) ** 2 + ((depth + stz[j]) / 1000) ** 2) ** 0.5
+                        logA0R = -(0.51 - 0.79 * 10 ** (-3) * R - 1.67 * np.log10(R))
+                        Ml_i = np.log10(am) + logA0R
+                        if abs(k / sr - expect) < dt and abs(Ml_i - premag) < sigmam * 3 and abs(k / sr - expect) * abs(Ml_i - premag) < dt * dm:
                             dt = abs(k / sr - expect)
+                            dm = abs(Ml_i - premag)
                             tryS[0][j] = k / sr
-                            trySam[0][j] = amphaseh2[j][k]
+                            #trySam[0][j] = amphaseh2[j][k]
+                            Ml[j * 2 + 1] = Ml_i
+                            if youS == False:
+                                checks = checks + 1
 
+            '''
             Ml = np.empty(nsta * 2)
             Ml[:] = np.nan
 
@@ -642,7 +675,7 @@ for date in range(0, totalday):
                     else:
                         Ml[j * 2 + 1] = Ml_i
                         checks = checks + 1
-
+            '''
 
             #if checkp + checks < 4 or checks == 0 or checkp == 0:
             if checks < 2 or checkp < 2:
