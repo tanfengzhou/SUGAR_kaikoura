@@ -21,8 +21,8 @@ def round_dec2(A):
 def round_dec5(A):
     return float("{:.2f}".format(A))
 
-Velmodel = 'Acarel2019vel_med'
-FilePath = './fk_inputs/'
+Velmodel = 'nz22vel'
+FilePath = './random_event_allst/'
 
 EQrange = range(0, 1000)
 
