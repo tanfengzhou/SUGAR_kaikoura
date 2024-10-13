@@ -2,7 +2,7 @@ Welcome to SUGAR training folder. Here are some useful scripts to prepare traini
 
 We used the fk program to calculate the synthetic waveforms. For trial runs, use 10 earthquakes instead of 1000 to save time and debug. 
 
-#Step 1 : run "to_fk_random_big.py". 
+** Step 1 : run "to_fk_random_big.py". 
 
 This will generate many outputs in the folder "random_event_allst". The initial generation of event locations and magnitudes have been commented. You need to modify the code. Those csv files numbered 0 to 999 are 1000 input earthquakes information with different location and magnitude for fk calculation. 
 
@@ -39,7 +39,7 @@ This can be done by running "eq1000catalog.py" for each day. The current example
 
 Step 9 : run "ssa2mat_smooth60_new"
 
-This step will cut out 60\times60\times60 blocks from the continuous brightness video and save corresponding 20*20*20 label blocks according to the input catalogs. We suggest to keep the folder structure as shown in this example. 
+This step will cut out 60 by 60 by 60 blocks from the continuous brightness video and save corresponding 20 by 20 by 20 label blocks according to the input catalogs. We suggest to keep the folder structure as shown in this example. 
 
 Step 10 : run "delete0pad20to60.m" 
 
