@@ -1,4 +1,4 @@
-imageDir = 'training_data_noise00004';
+imageDir = 'training_data_noise000007_all3areas';
 
 preprocessDataLoc = [imageDir filesep 'preprocessedDataset'];
 
@@ -52,7 +52,7 @@ outPatchSize = [20 20 20 1];
 
 % training options
 
-load('training_data_noise00004/checkpoints/net_checkpoint__138120__2023_06_26__03_55_02.mat','net')
+load('training_data_noise000007_all3areas/checkpoints/net_checkpoint__22195__2024_01_11__01_38_13.mat','net')
 lgraph = layerGraph(net);
 
 options = trainingOptions('adam', ...
@@ -72,8 +72,22 @@ doTraining = true;
 if doTraining
     modelDateTime = datestr(now,'dd-mmm-yyyy-HH-MM-SS');
     [net,info] = trainNetwork(dsTrain,lgraph,options);
-    save(['training_data_noise00004/checkpoints/checkpoint138120_epoch20.mat'],'net');
+    save(['training_data_noise000007_all3areas/checkpoints/checkpoint22195_epoch5.mat'],'net');
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
