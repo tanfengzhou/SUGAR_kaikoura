@@ -67,11 +67,15 @@ See settings inside the script. In this training process, you may see loss going
 
 **Step 13 : Evaluate the trained model**
 
-A testing dataset is required for model evaluation. You may used previous steps and scripts to generate a different set of continuous waveform, with some noise. In testing mode, we don't need to cut the continuous brightness videos into blocks. Just save it as ".mat" format. The lines are commented at the moment in "toAIbrmaps_mul.py". 
+A testing dataset is required for model evaluation. You may used previous steps and scripts to generate a different set of continuous waveform, with some noise. We recommand having different earthquake rates in different dates, like training data, and in each day just one hour is okay. In testing mode, we don't need to cut the continuous brightness videos into blocks. Just save it as ".mat" format. The lines are commented at the moment in "toAIbrmaps_mul.py". 
 
 The saved .mat brightness videos in one folder will be the inputs of "predictsmooth.m". This script will use a trained model to transfer the continuous brightness videos to continuous score videos. Note that the code needs to be changed with correct model name after training. Only the final saved model can be directly used in this script. If you want to use any epoch saved before the final model, you need to run "continuetrainsmooth.m" to format the checkpoint into a final model. 
 
-After having those score videos, you could run ""
+After having those score videos, you could run "ai_catalog_f1.m" for each testing hour. This script will set a range of score threshold and output corresponding precision, recall and f1 values to a csv file. Note that the locations here are not finalized because we have not gone through phase picking and location refinement steps. But these solutions can provide a good estimates of the model performance. 
+
+**Step 14 : Evaluate with real data**
+You should have a few hours of real data ready and test the trained model with those real data. In that case, the entire workflow can be run and finalized locations and magnitudes can be obtained. The performance can be evaluated using the real data test. If the output catalog seems to contain too many detections and include many questionable detections, this means that the training dataset may have had too high noise level. In contrast, if the output catalog seems to miss too many events, this means that the training dataset may have had too low noise level. According to the performance in the real data test, you may go back to adjust the noise level range of the training dataset. Repeat the training a few times and select an optimal model. 
+
 
 
 
