@@ -41,3 +41,26 @@ Step 9 : run "ssa2mat_smooth60_new"
 
 This step will cut out 60*60*60 blocks from the continuous brightness video and save corresponding 20*20*20 label blocks according to the input catalogs. We suggest to keep the folder structure as shown in this example. 
 
+Step 10 : run "delete0pad20to60.m" 
+
+This step will delete empty samples and pad 0 to label blocks in order to get the same size of the training block. 
+
+Step 11 : Randomly put 10% data to validation set. 
+
+This can be achieved by running the following lines:
+
+First enter the training data sample folder "imagesTr". 
+ls | shuf -n 19000 | xargs -i mv {} ../imagesVal/
+cd ../imagesVal/ 
+ls *>filelist
+mv filelist ../labelsTr/
+cd ../labelsTr/
+xargs -a filelist mv -t ../labelsVal/
+rm filelist 
+
+Then you could use the command "ls | wc -l" to see how many files are there in each folder. 
+
+
+
+
+
