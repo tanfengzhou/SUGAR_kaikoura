@@ -32,7 +32,7 @@ dsVal = randomPatchExtractionDatastore(voldsVal,pxdsVal,patchSize, ...
 dsVal.MiniBatchSize = miniBatchSize;
 
 dataSource = 'Training';
-dsTrain = transform(dsVal,@(patchIn)augment_regression(patchIn,dataSource));
+dsTrain = transform(patchds,@(patchIn)augment_regression(patchIn,dataSource));
 
 dataSource = 'Validation';
 dsVal = transform(dsVal,@(patchIn)augment_regression(patchIn,dataSource));
