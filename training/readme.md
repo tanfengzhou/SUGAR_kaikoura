@@ -29,6 +29,8 @@ Step 6 : run "train500noise.py" and others.
 
 This step will add noise to the continuous waveform. In the training stage, we want to add noise in a range. So set the lower and upper boundaries and the program will give different hours in that day different noise levels. The waveforms are ground velocity in cm/s. So, in order to figure out a realistic noise level or level range, you need to see some real seismograms in a few stations, remove instrument response and filter to the ideal frequency band, and do the measurement. This does not need to be very accurate, because (a) we are using a range, and (b) we need to try a few different noise level ranges anyways to obtain the optimal trained model. We suggest to give the lower boundary much lower than the real noise level and the upper boundary slightly higher than the real one. The AI model should learn more clear samples than ambiguous samples. A useful way to see whether the noise level makes sense is to do the source scanning on some known earthquakes with real and synthetic data. Earthquakes with similar location and similar magnitude should result in similar brightness peaks in the brightness video. 
 
+Step 7 : run "toAIbrmaps_mul.py"
 
+This step calculates continuous brightness videos with those continuous waveforms. Note that you need to set how many hours in each day of the continuous waveforms. In the original application, some days have 20 hours and some days have 10 hours. You could set up everything around line 220 of this script. In this way, this one script can run through multiple days of data. In each hour, this script use paralell computing. Note that the continuous brightness video generated from this step is not yet the input training dataset. 
 
 
