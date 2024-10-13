@@ -1,11 +1,9 @@
-fds = fileDatastore('./eq_fewer000035_60/preprocessedDataset/labelsTr/*.mat', 'ReadFcn', @importdata);
+fds = fileDatastore('training_data_noise00004/preprocessedDataset/labelsTr/*.mat', 'ReadFcn', @importdata);
 fullFileNames = fds.Files;
 numFiles = length(fullFileNames);
 
-datas = fileDatastore('./eq_fewer000035_60/preprocessedDataset/imagesTr/*.mat', 'ReadFcn', @importdata);
+datas = fileDatastore('training_data_noise00004/preprocessedDataset/imagesTr/*.mat', 'ReadFcn', @importdata);
 dataNames = datas.Files;
-
-% Loop over all files reading them in and plotting them.
 
 for k = 1 : numFiles
     if rem(k,1000) == 0
@@ -30,10 +28,6 @@ for k = 1 : numFiles
     
     	save(fullFileNames{k}, 'labelone');
     end
-
-    % Now have code to read in the data using whatever function you want.
-
-    % Now put code to plot the data or process it however you want...
 
 end
 
