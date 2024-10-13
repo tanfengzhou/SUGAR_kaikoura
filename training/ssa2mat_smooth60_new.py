@@ -13,10 +13,10 @@ def find_nearest(array,value):
         return idx
 
 
-dirread = 'brvideo_soft/noise57_select/'
-outputdir = 'training_data_noise57_soft_select/preprocessedDataset/'
+dirread = 'brvideo/noise00004/'
+outputdir = 'eq_fewer00004_60/preprocessedDataset/'
 
-studyarea = [35.5, 35.3, 3.58, 4.39]
+studyarea = [-44.2, 171.0, 3.72, 5.2]
 xygrid = 4         #km
 depgrid = 4        #km
 margin = 20
@@ -35,7 +35,7 @@ lons = np.arange(studyarea[1],studyarea[1]+studyarea[3],longrid)
 
 time_begin=dict([
     ('year','1970'),
-    ('month','01'),
+    ('month','02'),
     ('day','01'),
     ('hour','00'),
     ('min','00'),
@@ -44,7 +44,7 @@ time_begin=dict([
 
 time_end=dict([
     ('year','1970'),
-    ('month','01'),
+    ('month','02'),
     ('day','01'),
     ('hour','10'),
     ('min','00'),
@@ -61,7 +61,7 @@ timestep = 7200
 totalhours = int(time_end['hour']) - int(time_begin['hour'])
 
 
-with open('syn_wave/data1970/01/' + time_begin['day'] + 'clean/input_catalog.csv', 'r') as f:
+with open('syn_wave/data1970/02/' + time_begin['day'] + 'clean/input_catalog.csv', 'r') as f:
     comein = f.readlines()
 
 input_catalog = []
