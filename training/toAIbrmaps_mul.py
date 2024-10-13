@@ -15,10 +15,10 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 from scipy.io import savemat
 
-nametag='noise000004'
+nametag='noise00002'
 
 area='fewer'
-studyarea = [35.5, 35.3, 3.58, 4.39]
+studyarea = [-44.2, 171.0, 3.72, 5.2]
 studydepth=[10,10]
 xygrid=4         #km
 depgrid=4        #km
@@ -35,7 +35,7 @@ studyarea[3] = studyarea[3] + longrid * margin * 2
 
 time_begin=dict([
     ('year','1970'),
-    ('month','01'),
+    ('month','02'),
     ('day','01'),
     ('hour','00'),
     ('min','00'),
@@ -44,8 +44,8 @@ time_begin=dict([
 
 time_end=dict([
     ('year','1970'),
-    ('month','01'),
-    ('day','08'),
+    ('month','02'),
+    ('day','06'),
     ('hour','20'),
     ('min','00'),
     ('second', '00')
@@ -127,7 +127,7 @@ for date in range(0, totalday):
     else:
         day=str(day)
 
-    datadir = 'syn_wave/data1970/01/' + day + nametag + '/'
+    datadir = 'syn_wave/data1970/02/' + day + nametag + '/'
 
     stlas=[]
     stlos=[]
