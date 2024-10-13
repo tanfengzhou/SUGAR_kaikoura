@@ -69,7 +69,9 @@ See settings inside the script. In this training process, you may see loss going
 
 A testing dataset is required for model evaluation. You may used previous steps and scripts to generate a different set of continuous waveform, with some noise. In testing mode, we don't need to cut the continuous brightness videos into blocks. Just save it as ".mat" format. The lines are commented at the moment in "toAIbrmaps_mul.py". 
 
+The saved .mat brightness videos in one folder will be the inputs of "predictsmooth.m". This script will use a trained model to transfer the continuous brightness videos to continuous score videos. Note that the code needs to be changed with correct model name after training. Only the final saved model can be directly used in this script. If you want to use any epoch saved before the final model, you need to run "continuetrainsmooth.m" to format the checkpoint into a final model. 
 
+After having those score videos, you could run ""
 
 
 
