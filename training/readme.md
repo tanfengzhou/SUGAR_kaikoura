@@ -50,14 +50,14 @@ Step 11 : Randomly put 10% data to validation set.
 This can be achieved by running the following lines:
 
 First enter the training data sample folder "imagesTr". 
-ls | shuf -n 19000 | xargs -i mv {} ../imagesVal/
 
-cd ../imagesVal/ 
-ls *>filelist
-mv filelist ../labelsTr/
-cd ../labelsTr/
-xargs -a filelist mv -t ../labelsVal/
-rm filelist 
+  ls | shuf -n 19000 | xargs -i mv {} ../imagesVal/
+  cd ../imagesVal/ 
+  ls *>filelist
+  mv filelist ../labelsTr/
+  cd ../labelsTr/
+  xargs -a filelist mv -t ../labelsVal/
+  rm filelist 
 
 Then you could use the command "ls | wc -l" to see how many files are there in each folder. 
 
