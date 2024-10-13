@@ -17,7 +17,7 @@ from scipy.io import savemat
 
 nametag='noise000004'
 
-area='turall'
+area='fewer'
 studyarea = [35.5, 35.3, 3.58, 4.39]
 studydepth=[10,10]
 xygrid=4         #km
