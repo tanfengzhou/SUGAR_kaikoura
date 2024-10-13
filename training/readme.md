@@ -25,6 +25,10 @@ Step 5 : run "train500allst.py" and other "train##allst.py" files.
 
 This step creates continous waveforms based on individual earthquake waveforms. The number 500 means there are about 500 earhtquakes per hour. Each file generate several hours of data in a given date, e.g., 1970-02-01, 1970-02-02, etc. We suggest to store the continuous waveforms in the folders formatted as "somewhere/data1970/02/01clean/". Each day has a different earthquake rate. Remember these are clean waveforms and we will add noise later. The input and output directory should be changed according to your folder structure. 
 
+Step 6 : run "train500noise.py" and others. 
+
+This step will add noise to the continuous waveform. In the training stage, we want to add noise in a range. So set the lower and upper boundaries and the program will give different hours in that day different noise levels. The waveforms are ground velocity in cm/s. So, in order to figure out a realistic noise level or level range, you need to see some real seismograms in a few stations, remove instrument response and filter to the ideal frequency band, and do the measurement. This does not need to be very accurate, because (a) we are using a range, and (b) we need to try a few different noise level ranges anyways to obtain the optimal trained model. We suggest to give the lower boundary much lower than the real noise level and the upper boundary slightly higher than the real one. The AI model should learn more clear samples than ambiguous samples. A useful way to see whether the noise level makes sense is to do the source scanning on some known earthquakes with real and synthetic data. Earthquakes with similar location and similar magnitude should result in similar brightness peaks in the brightness video. 
+
 
 
 
