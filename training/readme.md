@@ -21,4 +21,10 @@ Step 4 : run "read_synthetic1000.py"
 
 The direct output of fk is in Radius and Transform directions. This step will change those to ZNE directions and save the files to the folder "fk_zne". Create the folder before running. 
 
+Step 5 : run "train500allst.py" and other "train##allst.py" files.
+
+This step creates continous waveforms based on individual earthquake waveforms. The number 500 means there are about 500 earhtquakes per hour. Each file generate several hours of data in a given date, e.g., 1970-02-01, 1970-02-02, etc. We suggest to store the continuous waveforms in the folders formatted as "somewhere/data1970/02/01clean/". Each day has a different earthquake rate. Remember these are clean waveforms and we will add noise later. The input and output directory should be changed according to your folder structure. 
+
+
+
 
