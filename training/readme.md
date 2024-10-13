@@ -51,8 +51,8 @@ This can be achieved by running the following lines:
 
 First enter the training data sample folder "imagesTr". 
 '''
-  ls | shuf -n 19000 | xargs -i mv {} ../imagesVal/
-  cd ../imagesVal/
+>ls | shuf -n 19000 | xargs -i mv {} ../imagesVal/
+>cd ../imagesVal/
   ls *>filelist
   mv filelist ../labelsTr/
   cd ../labelsTr/
