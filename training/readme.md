@@ -33,4 +33,11 @@ Step 7 : run "toAIbrmaps_mul.py"
 
 This step calculates continuous brightness videos with those continuous waveforms. Note that you need to set how many hours in each day of the continuous waveforms. In the original application, some days have 20 hours and some days have 10 hours. You could set up everything around line 220 of this script. In this way, this one script can run through multiple days of data. In each hour, this script use paralell computing. Note that the continuous brightness video generated from this step is not yet the input training dataset. 
 
+Step 8 : Prepare synthetic earthquake catalogs to label the training dataset. 
+
+This can be done by running "eq1000catalog.py" for each day. The current example is for 1970-01-04, which contains 400 earthquakes. This was set in step 5. You need to change the total number of earthquakes according to what you set in step 5 for each day. After running this for all dates, each day should have a catalog stored in the clean data folder. 
+
+Step 9 : run "ssa2mat_smooth60_new"
+
+This step will cut out 60*60*60 blocks from the continuous brightness video and save corresponding 20*20*20 label blocks according to the input catalogs. We suggest to keep the folder structure as shown in this example. 
 
